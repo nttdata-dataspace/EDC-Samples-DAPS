@@ -18,6 +18,8 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
+val useDAPS: Boolean = System.getProperty("useDAPS", "false").toBoolean()
+
 dependencies {
     implementation(libs.edc.control.api.configuration)
     implementation(libs.edc.control.plane.api.client)
@@ -25,7 +27,12 @@ dependencies {
     implementation(libs.edc.control.plane.core)
     implementation(libs.edc.dsp)
     implementation(libs.edc.configuration.filesystem)
-    implementation(libs.edc.iam.mock)
+    if (useDAPS) {
+        implementation(libs.edc.oauth2.core)
+        implementation(libs.edc.oauth2.daps)
+    } else {
+        implementation(libs.edc.iam.mock)
+    }
     implementation(libs.edc.management.api)
     implementation(libs.edc.transfer.data.plane.signaling)
     implementation(libs.edc.transfer.pull.http.receiver)
@@ -52,8 +59,16 @@ application {
 var distTar = tasks.getByName("distTar")
 var distZip = tasks.getByName("distZip")
 
+tasks.withType<Jar> {
+    archiveBaseName.set("connector-intermediate")
+}
+
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     mergeServiceFiles()
-    archiveFileName.set("connector.jar")
+    if (useDAPS) {
+        archiveFileName.set("connector-daps.jar")
+    } else {
+        archiveFileName.set("connector.jar")
+    }
     dependsOn(distTar, distZip)
 }

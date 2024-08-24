@@ -82,6 +82,8 @@ testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", ve
 kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafkaClients" }
 testcontainers-kafka = { module = "org.testcontainers:kafka", version.ref = "testcontainers" }
 testcontainers-junit = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
+edc-oauth2-core = { module = "org.eclipse.edc:oauth2-core", version.ref = "edc" }
+edc-oauth2-daps = { module = "org.eclipse.edc:oauth2-daps", version.ref = "edc" }
 
 [plugins]
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
